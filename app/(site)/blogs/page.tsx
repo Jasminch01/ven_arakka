@@ -12,6 +12,7 @@ async function getPosts() {
     slug,
     mainImage,
     publishedAt,
+    "excerpt": pt::text(body),
     "authorName": author->name,
     "authorImage": author->image
   }`
@@ -35,14 +36,15 @@ export default async function BlogPage() {
                 </p>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+            <div className="flex flex-col gap-16">
                 {posts.map((post: any, index: number) => (
                     <Link
                         key={post.slug.current}
                         href={`/blogs/${post.slug.current}`}
-                        className={`group block space-y-8 ${index === 0 ? "md:col-span-2 lg:col-span-2 md:flex md:gap-16 md:items-center" : ""}`}
+                        className={`group block space-y-8 md:col-span-2 lg:col-span-2 md:flex md:gap-16`}
                     >
-                        <div className={`relative overflow-hidden rounded-3xl shadow-xl transition-all duration-700 group-hover:shadow-[#4a2c1d]/15 ${index === 0 ? "md:w-3/5 aspect-[16/10]" : "aspect-[4/3]"}`}>
+                        {/* Image Container (Right Side) */}
+                        <div className={`relative w-full md:w-2/5 aspect-[4/3] overflow-hidden rounded-3xl shadow-xl transition-all duration-700 group-hover:shadow-[#4a2c1d]/15 shrink-0`}>
                             {post.mainImage ? (
                                 <Image
                                     src={urlFor(post.mainImage).url()}
@@ -61,34 +63,25 @@ export default async function BlogPage() {
                             </div>
                         </div>
 
-                        <div className={`space-y-6 flex-1 ${index === 0 ? "" : "pt-4"}`}>
+                        {/* Content Container (Left Side) */}
+                        <div className="flex-1 space-y-6 flex flex-col justify-center py-6">
                             <div className="flex items-center gap-4 text-xs uppercase tracking-[0.2em] font-bold text-[#8b4513]">
                                 <Calendar size={14} />
                                 <span>{new Date(post.publishedAt).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                             </div>
 
-                            <h2 className={`font-playfair font-bold text-[#4a2c1d] leading-tight group-hover:text-[#8b4513] transition-colors ${index === 0 ? "text-4xl lg:text-5xl" : "text-3xl"}`}>
+                            <h2 className="text-4xl md:text-5xl font-playfair font-bold text-[#4a2c1d] leading-tight group-hover:text-[#8b4513] transition-colors">
                                 {post.title}
                             </h2>
 
-                            <p className="text-[#6b5b52] leading-relaxed line-clamp-2 italic text-lg opacity-80">
-                                Discovering deep peace in a busy digital age. Reflections on meditation and the nature of mindfulness.
-                            </p>
-
-                            <div className="flex items-center gap-3 border-t border-[#e9e2d5] pt-6 group-hover:border-[#8b4513]/30 transition-colors">
-                                {post.authorImage && (
-                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#e9e2d5]">
-                                        <Image
-                                            src={urlFor(post.authorImage).width(40).height(40).url()}
-                                            alt={post.authorName}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                )}
-                                <span className="text-sm font-medium tracking-wide text-[#2c1810] uppercase">{post.authorName}</span>
-                            </div>
+                            {post.excerpt && (
+                                <p className="text-lg text-[#6b5b52] leading-relaxed line-clamp-3">
+                                    {post.excerpt}
+                                </p>
+                            )}
                         </div>
+
+
                     </Link>
                 ))}
             </div>

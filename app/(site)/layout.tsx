@@ -71,10 +71,6 @@ export default function SiteLayout({
                         className="flex items-center gap-2 group transition-all"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        <div className="w-10 h-10 bg-[#8b4513] rounded-full flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform">
-                            {/* Simple lotus-like visual placeholder */}
-                            <span className="text-xl font-serif">A</span>
-                        </div>
                         <span className="text-2xl font-playfair font-semibold tracking-tight text-[#4a2c1d]">
                             Ven. Arrakkha
                         </span>
